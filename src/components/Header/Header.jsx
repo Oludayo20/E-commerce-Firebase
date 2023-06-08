@@ -86,7 +86,7 @@ const Header = () => {
               </span>
               <span className="cart_icon">
                 <i className="ri-shopping-bag-line"></i>
-                <span className="badge">2</span>
+                <span className="badge">{totalQuantity}</span>
               </span>
               <span>
                 <motion.img
