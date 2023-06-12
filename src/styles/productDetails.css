@@ -36,3 +36,56 @@
 .tab_content p {
   line-height: 30px;
 }
+
+.review_wrapper span {
+  color: coral;
+  font-weight: 600;
+}
+
+.review_wrapper ul li p {
+  margin-top: 10px;
+}
+
+.review_form {
+  width: 70%;
+  margin: auto;
+  margin-top: 50px;
+}
+
+.review_form h4 {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 30px;
+}
+
+.form_group input,
+.form_group textarea {
+  width: 100%;
+  border: 1px solid var(--primary-color);
+  border-radius: 5px;
+  padding: 8px 20px;
+}
+
+.form_group input:focus,
+.form_group textarea input:focus {
+  outline: none;
+}
+
+.form_group {
+  margin-bottom: 30px;
+}
+
+.form_group span {
+  display: flex;
+  align-items: center;
+  column-gap: 5px;
+  color: coral;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.related_title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-top: 30px;
+}
