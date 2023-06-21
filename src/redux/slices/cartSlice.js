@@ -6,6 +6,8 @@ const initialState = {
   totalQuantity: 0
 };
 
+console.log(initialState.cartItems);
+
 const cartSlice = createSlice({
   name: 'cart',
   initialState,
@@ -22,7 +24,7 @@ const cartSlice = createSlice({
         state.cartItems.push({
           id: newItem.id,
           productName: newItem.productName,
-          image: newItem.imgUrl,
+          imgUrl: newItem.imgUrl,
           price: newItem.price,
           quantity: 1,
           totalPrice: newItem.price

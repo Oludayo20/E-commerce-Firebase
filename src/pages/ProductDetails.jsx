@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import products from '../assets/data/products';
 import Helmet from '../components/Helmet/Helmet';
 import CommonSection from '../components/UI/CommonSection';
@@ -42,6 +42,16 @@ const ProductDetails = () => {
 
     const reviewUserName = reviewUser.current.value;
     const reviewUserMsg = reviewMsg.current.value;
+
+    const reviewObj = {
+      userName: reviewUserName,
+      text: reviewUserMsg,
+      rating
+    };
+
+    console.log(reviewObj);
+
+    toast.success('Review Submitted!!!');
   };
 
   const addToCart = () => {
@@ -56,9 +66,13 @@ const ProductDetails = () => {
     toast.success('Product added to the cart');
   };
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [product]);
+
   return (
     <Helmet title={productName}>
-      <CommonSection />
+      <CommonSection title={productName} />
       <section className="pt-0">
         <Container>
           <Row>
@@ -83,10 +97,7 @@ const ProductDetails = () => {
                       <i className="ri-star-s-fill"></i>
                     </span>
                     <span>
-                      <i className="ri-star-s-fill"></i>
-                    </span>
-                    <span>
-                      <i className="ri-star-s-fill"></i>
+                      <i className="ri-star-half-s-line"></i>
                     </span>
                   </div>
                   <p>
@@ -158,25 +169,41 @@ const ProductDetails = () => {
                             type="text"
                             placeholder="Enter name"
                             ref={reviewUser}
+                            required
                           />
                         </div>
 
-                        <div className="form_group d-flex align-items-center gap-5">
-                          <span onClick={() => setRating(1)}>
+                        <div className="form_group d-flex align-items-center gap-5 rating_group">
+                          <motion.span
+                            whileTap={{ scale: 1.2 }}
+                            onClick={() => setRating(1)}
+                          >
                             1<i className="ri-star-s-fill"></i>
-                          </span>
-                          <span onClick={() => setRating(2)}>
+                          </motion.span>
+                          <motion.span
+                            whileTap={{ scale: 1.2 }}
+                            onClick={() => setRating(2)}
+                          >
                             2<i className="ri-star-s-fill"></i>
-                          </span>
-                          <span onClick={() => setRating(3)}>
+                          </motion.span>
+                          <motion.span
+                            whileTap={{ scale: 1.2 }}
+                            onClick={() => setRating(3)}
+                          >
                             3<i className="ri-star-s-fill"></i>
-                          </span>
-                          <span onClick={() => setRating(4)}>
+                          </motion.span>
+                          <motion.span
+                            whileTap={{ scale: 1.2 }}
+                            onClick={() => setRating(4)}
+                          >
                             4<i className="ri-star-s-fill"></i>
-                          </span>
-                          <span onClick={() => setRating(5)}>
+                          </motion.span>
+                          <motion.span
+                            whileTap={{ scale: 1.2 }}
+                            onClick={() => setRating(5)}
+                          >
                             5<i className="ri-star-s-fill"></i>
-                          </span>
+                          </motion.span>
                         </div>
                         <div className="form_group">
                           <textarea
@@ -184,6 +211,7 @@ const ProductDetails = () => {
                             rows={4}
                             type="text"
                             placeholder="Review Message..."
+                            required
                           />
                         </div>
 
