@@ -14,7 +14,7 @@ const Footer = () => {
           <Col lg="4" className="mb-4" md="6">
             <div className="logo">
               <div>
-                <h1 className="text-white">Multimart</h1>
+                <h1 className="text-white">Shop-io</h1>
               </div>
             </div>
             <p className="footer_text mt-3">

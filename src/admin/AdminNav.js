@@ -33,7 +33,7 @@ const AdminNav = () => {
           <Container>
             <div className="admin_nav-wrapper-top">
               <div className="logo">
-                <h2>Multimart</h2>
+                <h2>Shop-io</h2>
               </div>
 
               <div className="search_box">
