@@ -1,17 +1,22 @@
 import React, { useEffect, useRef, useState } from 'react';
-import products from '../assets/data/products';
 import Helmet from '../components/Helmet/Helmet';
 import CommonSection from '../components/UI/CommonSection';
 import { Container, Col, Row } from 'reactstrap';
 import { useParams } from 'react-router-dom';
 import '../styles/productDetails.css';
 import { motion } from 'framer-motion';
-import ProductsList from '../components/UI/ProductList';
+import ProductList from '../components/UI/ProductList';
 import { useDispatch } from 'react-redux';
 import { cartActions } from '../redux/slices/cartSlice';
 import { toast } from 'react-toastify';
 
+import { db } from '../firebase.config';
+import { doc, getDoc } from 'firebase/firestore';
+import useGetData from '../custom-hooks/useGetData';
+
 const ProductDetails = () => {
+  const [product, setProduct] = useState({});
+
   const [tab, setTab] = useState('des');
 
   const reviewUser = useRef('');
@@ -22,14 +27,29 @@ const ProductDetails = () => {
   const [rating, setRating] = useState(null);
 
   const { id } = useParams();
-  const product = products.find((item) => item.id === id);
+
+  const { data: products, loading } = useGetData();
+
+  const docRef = doc(db, 'products', id);
+  useEffect(() => {
+    const getProduct = async () => {
+      const docSnap = await getDoc(docRef);
+
+      if (docSnap.exists()) {
+        setProduct(docSnap.data());
+      } else {
+        console.log('No Product!');
+      }
+    };
+
+    grtProduct();
+  }, []);
 
   const {
     imgUrl,
     productName,
     price,
-    avgRating,
-    reviews,
+
     description,
     shortDesc,
     category
@@ -100,9 +120,7 @@ const ProductDetails = () => {
                       <i className="ri-star-half-s-line"></i>
                     </span>
                   </div>
-                  <p>
-                    ( <span>{avgRating}</span> ratings)
-                  </p>
+                  <p>{/* ( <span>{avgRating}</span> ratings) */}</p>
                 </div>
 
                 <div className="d-flex align-items-center gap-5">
@@ -140,7 +158,8 @@ const ProductDetails = () => {
                   className={`${tab === 'rev' ? 'active_tab' : ''}`}
                   onClick={() => setTab('rev')}
                 >
-                  Reviews({reviews.length})
+                  Reviews
+                  {/* ({reviews.length}) */}
                 </h6>
               </div>
 
@@ -152,13 +171,13 @@ const ProductDetails = () => {
                 <div className="product_review mt-5">
                   <div className="review_wrapper">
                     <ul>
-                      {reviews?.map((item, index) => (
+                      {/* {reviews?.map((item, index) => (
                         <li className="mb-4">
                           <h6>John Doe</h6>
                           <span>{item.rating}(rating)</span>
                           <p>{item.text}</p>
                         </li>
-                      ))}
+                      ))} */}
                     </ul>
 
                     <div className="review_form">
@@ -227,7 +246,14 @@ const ProductDetails = () => {
             <Col lg="12" className="mt-5">
               <h2 className="related_title">You might also like</h2>
             </Col>
-            <ProductsList data={relatedProducts} />
+            {loading ? (
+              <Col lg="12" className="text-center">
+                <h5 className="fw-bold">Loading...</h5>
+              </Col>
+            ) : (
+              <ProductList data={products} />
+            )}
+            {/* <ProductsList data={relatedProducts} /> */}
           </Row>
         </Container>
       </section>

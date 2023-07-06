@@ -5,12 +5,12 @@ import { doc, deleteDoc } from 'firebase/firestore';
 import { db } from '../firebase.config';
 import { toast } from 'react-toastify';
 
-const AllProducts = () => {
-  const { data: productsData, loading } = useGetData('products');
+const Users = () => {
+  const { data: usersData, loading } = useGetData('users');
 
-  const deleteProduct = async (id) => {
-    await deleteDoc(doc(db, 'products', id));
-    toast.success('Product deleted!');
+  const deleteUser = async (id) => {
+    await deleteDoc(doc(db, 'users', id));
+    toast.success('User deleted!');
   };
 
   return (
@@ -18,36 +18,37 @@ const AllProducts = () => {
       <Container>
         <Row>
           <Col lg="12">
+            <h4 className="fw-bold">Users</h4>
+          </Col>
+          <Col lg="12">
             <table className="table">
               <thead>
                 <tr>
                   <th>Image</th>
-                  <th>Product Name</th>
-                  <th>Category</th>
-                  <th>Price</th>
+                  <th>Username</th>
+                  <th>Email</th>
                   <th>Action</th>
                 </tr>
               </thead>
               <tbody>
                 {loading ? (
-                  <h3 className="py-5 text-center fw-bold">Loading...</h3>
+                  <p className="py-5 text-center fw-bold">Loading...</p>
                 ) : (
-                  productsData.map((item) => (
-                    <tr key={item.id}>
+                  usersData.map((user) => (
+                    <tr key={user.uid}>
                       <td>
                         <img
-                          src={item.imgUrl}
+                          src={user.photoURL}
                           alt="Product Img"
-                          style={{ width: '50px' }}
+                          style={{ width: '50px', height: '50px' }}
                         />
                       </td>
-                      <td>{item.productName}</td>
-                      <td>{item.category}</td>
-                      <td>N{item.price}</td>
+                      <td>{user.displayName}</td>
+                      <td>{user.email}</td>
                       <td>
                         <button
                           onClick={() => {
-                            deleteProduct(item.id);
+                            deleteUser(user.uid);
                           }}
                           className="btn btn-danger"
                         >
@@ -66,4 +67,4 @@ const AllProducts = () => {
   );
 };
 
-export default AllProducts;
+export default Users;
