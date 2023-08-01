@@ -5,6 +5,7 @@ import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
 import { collection, addDoc, setDoc } from 'firebase/firestore';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
+import Spinner from '../utils/Spinner';
 
 const AddProducts = () => {
   const [enterTitle, setEnterTitle] = useState('');
@@ -29,15 +30,20 @@ const AddProducts = () => {
         `productImages/${Date.now() + enterProductImg.name}`
       );
       const uploadTask = uploadBytesResumable(storageRef, enterProductImg);
-      console.log(uploadTask);
+      // console.log(uploadTask);
 
-      uploadTask.on(
-        (error) => {
-          toast.error('Error uploading image');
-        },
-        () => {
-          getDownloadURL(uploadTask.snapshot.ref)
-            .then(async (downloadURL) => {
+      await new Promise((resolve, reject) => {
+        uploadTask.on(
+          'state_changed',
+          () => {},
+          (error) => {
+            setLoading(false);
+            reject(error);
+            toast.error('Error uploading image');
+          },
+          async () => {
+            try {
+              const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
               const productData = {
                 productName: enterTitle,
                 shortDec: enterShortDec,
@@ -50,13 +56,49 @@ const AddProducts = () => {
               setLoading(false);
               toast.success('Product added successfully!');
               navigate('/dashboard/all-products');
-            })
-            .catch(() => {
+              resolve();
+            } catch (error) {
+              setLoading(false);
+              console.log(error);
               toast.error('Error retrieving download URL');
-            });
-        }
-      );
+              reject(error);
+            }
+          }
+        );
+      });
+
+      // uploadTask.on(
+      //   (error) => {
+      //     setLoading(false);
+      //     console.log(error);
+      //     toast.error('Error uploading image');
+      //   },
+      //   async () => {
+      //     await getDownloadURL(uploadTask.snapshot.ref)
+      //       .then(async (downloadURL) => {
+      //         const productData = {
+      //           productName: enterTitle,
+      //           shortDec: enterShortDec,
+      //           description: enterDescription,
+      //           category: enterCategory,
+      //           price: enterPrice,
+      //           imgUrl: downloadURL
+      //         };
+      //         await addDoc(docRef, productData);
+      //         setLoading(false);
+      //         toast.success('Product added successfully!');
+      //         navigate('/dashboard/all-products');
+      //       })
+      //       .catch((error) => {
+      //         setLoading(false);
+      //         console.log(error);
+      //         toast.error('Error retrieving download URL');
+      //       });
+      //   }
+      // );
     } catch (error) {
+      setLoading(false);
+      console.log(error);
       toast.error('Product not added!');
     }
   };
@@ -68,7 +110,7 @@ const AddProducts = () => {
           <Col lg="12">
             {loading ? (
               <Col lg="12" className="text-center">
-                <h5 className="py-5 fw-bold">Loading...</h5>
+                <Spinner />
               </Col>
             ) : (
               <>

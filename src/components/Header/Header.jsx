@@ -74,7 +74,7 @@ const Header = () => {
   const menuToggle = () => menuRef.current.classList.toggle('active_menu');
 
   const toggleProfileActions = () =>
-    profileActionRef.current.classList.toggle('active_menu');
+    profileActionRef.current.classList.toggle('show__profileActions');
 
   return (
     <header className="header" ref={headerRef}>
@@ -127,12 +127,14 @@ const Header = () => {
                   onClick={toggleProfileActions}
                 >
                   {currentUser ? (
-                    <span onClick={logout}>Logout</span>
+                    <>
+                      <span onClick={logout}>Logout</span>
+                      <Link to="/dashboard">Dashboard</Link>
+                    </>
                   ) : (
                     <div className="d-flex align-items-center justify-content-center flex-column">
                       <Link to="/signup">Signup</Link>
                       <Link to="/login">Login</Link>
-                      <Link to="/dashboard">Dashboard</Link>
                     </div>
                   )}
                 </div>
