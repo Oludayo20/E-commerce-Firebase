@@ -27,10 +27,14 @@ const ProductDetails = () => {
   const [rating, setRating] = useState(null);
 
   const { id } = useParams();
+  console.log(id);
 
   const { data: products, loading } = useGetData();
 
-  const docRef = doc(db, 'products', id);
+  const docRef =
+    // doc(db, 'products', id);
+    db.collection('products').doc(id).get();
+  console.log(docRef);
   useEffect(() => {
     const getProduct = async () => {
       const docSnap = await getDoc(docRef);
@@ -45,15 +49,8 @@ const ProductDetails = () => {
     getProduct();
   }, []);
 
-  const {
-    imgUrl,
-    productName,
-    price,
-
-    description,
-    shortDesc,
-    category
-  } = product;
+  const { imgUrl, productName, price, description, shortDesc, category } =
+    product;
 
   const relatedProducts = products.filter((item) => item.category === category);
 

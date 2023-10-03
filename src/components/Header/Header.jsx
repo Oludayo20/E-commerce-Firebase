@@ -54,6 +54,10 @@ const Header = () => {
     navigate('/cart');
   };
 
+  const navigateToLogin = () => {
+    navigate('/login');
+  };
+
   const logout = () => {
     signOut(auth)
       .then(() => {
@@ -74,7 +78,7 @@ const Header = () => {
   const menuToggle = () => menuRef.current.classList.toggle('active_menu');
 
   const toggleProfileActions = () =>
-    profileActionRef.current.classList.toggle('show__profileActions');
+    profileActionRef.current.classList.toggle('show_profileActions');
 
   return (
     <header className="header" ref={headerRef}>
@@ -121,16 +125,12 @@ const Header = () => {
                   alt="UserIcon"
                   onClick={toggleProfileActions}
                 />
-                <div
-                  className="profile_actions"
-                  ref={profileActionRef}
-                  onClick={toggleProfileActions}
-                >
+                <div className="profile_actions" ref={profileActionRef}>
                   {currentUser ? (
-                    <>
+                    <div className="d-flex align-items-center justify-content-center flex-column">
                       <span onClick={logout}>Logout</span>
                       <Link to="/dashboard">Dashboard</Link>
-                    </>
+                    </div>
                   ) : (
                     <div className="d-flex align-items-center justify-content-center flex-column">
                       <Link to="/signup">Signup</Link>
